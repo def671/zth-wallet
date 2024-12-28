@@ -1,7 +1,7 @@
 {
-  "name": "XEROWallet",
-  "version": "1.2.0",
-  "description": "Desktop wallet for XERO currency",
+  "name": "ZetherWallet",
+  "version": "1.0.0",
+  "description": "Zether Desktop Wallet (linux only)",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -11,7 +11,7 @@
     "dist-osx": "build --platform=mac --arch=x64"
   },
   "build": {
-    "appId": "com.xerom.wallet",
+    "appId": "com.zth.wallet",
     "files": [
       "modules/*",
       "assets/**/*",
@@ -45,13 +45,13 @@
       ]
     }
   },
-  "repository": "https://github.com/xero-official/Xero-Wallet",
+  "repository": "https://github.com/def671/zth-wallet",
   "keywords": [
-    "XERO",
+    "Zth",
     "Desktop",
     "Wallet"
   ],
-  "author": "Xerom",
+  "author": "def",
   "license": "CC0-1.0",
   "dependencies": {
     "@unibeautify/beautifier-js-beautify": "^0.4.0",
