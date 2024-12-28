@@ -9,7 +9,7 @@ const singleInstance = require("single-instance");
 const path = require("path");
 const fs = require("fs");
 
-var locker = new singleInstance("Ether1DesktopWallet");
+var locker = new singleInstance("ZetherWallet");
 
 locker.lock().then(function() {
   // Keep a global reference of the window object, if you don't, the window will
