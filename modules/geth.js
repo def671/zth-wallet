@@ -55,7 +55,7 @@ class Geth {
       const gethPath = path.join(this.binaries, "geth");
       this.gethProcess = child_process.spawn(gethPath, [
         "--log.file",
-        `"${path.join(datadir, "geth.log")}"`,
+        `${path.join(datadir, "geth.log")}`,
         "--datadir",
         `${datadir}`,
         "--allow-insecure-unlock",
