@@ -3,7 +3,7 @@ const {ipcRenderer} = require("electron");
 class Wallets {
   constructor() {
     this.addressList = [];
-    $.getJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum-classic", function (price) {
+    $.getJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=zether", function (price) {
       EthoWallets._setPrice(price.USD);
     });
   }
