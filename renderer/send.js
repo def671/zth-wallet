@@ -36,7 +36,7 @@ class SendTransaction {
       }
 
       if (Number($("#sendAmmount").val()) <= 0) {
-        EthoMainGUI.showGeneralError("Send ammount must be greater then zero!");
+        EthoMainGUI.showGeneralError("Send amount must be greater then zero!");
         return false;
       }
 
