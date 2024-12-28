@@ -3,8 +3,7 @@ const {ipcRenderer} = require("electron");
 class Wallets {
   constructor() {
     this.addressList = [];
-
-    $.getJSON("https://min-api.cryptocompare.com/data/price?fsym=XERO&tsyms=USD", function (price) {
+    $.getJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum-classic", function (price) {
       EthoWallets._setPrice(price.USD);
     });
   }
@@ -114,7 +113,7 @@ class Wallets {
       $(document).trigger("render_wallets");
       EthoWallets.enableButtonTooltips();
 
-      $("#labelSumDollars").html(vsprintf("/ %.2f $ / %.4f $ per XERO", [
+      $("#labelSumDollars").html(vsprintf("/ %.2f $ / %.4f $ per ZTH", [
         data.sumBalance * EthoWallets._getPrice(),
         EthoWallets._getPrice()
       ]));
