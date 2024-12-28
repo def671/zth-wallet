@@ -61,7 +61,7 @@ class Geth {
         "--rpc.allow-unprotected-txs",
         "--ws",
         "--ws.origins",
-        "file://*",
+        "*",
         "--ws.addr",
         "127.0.0.1",
         "--ws.port",
