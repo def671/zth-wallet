@@ -57,7 +57,7 @@ class Geth {
         "--log.file",
         `"${path.join(datadir, "geth.log")}"`,
         "--datadir",
-        `"${datadir}"`,
+        `${datadir}`,
         "--allow-insecure-unlock",
         "--rpc.allow-unprotected-txs",
         "--ws",
