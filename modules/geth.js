@@ -74,7 +74,7 @@ class Geth {
         "--networkid",
         "715131",
         "--syncmode",
-        "full",
+        "snap",
         "--ethstats",
         "tester:zether@zth-stats.outsidethebox.top",
         "--bootnodes",
