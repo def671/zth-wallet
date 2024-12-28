@@ -4,6 +4,8 @@ const appRoot = require("app-root-path");
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
+const datadir = process.env.GETH_DATADIR || path.resolve(process.env.HOME || '~', '.wally');
+
 
 class Geth {
   constructor() {
@@ -52,13 +54,15 @@ class Geth {
       this.isRunning = true;
       const gethPath = path.join(this.binaries, "geth");
       this.gethProcess = child_process.spawn(gethPath, [
-        //"--log.file",
-        //`"${path.join(datadir, "geth.log")}"`,
+        "--log.file",
+        `"${path.join(datadir, "geth.log")}"`,
+        "--datadir",
+        `"${datadir}"`,
         "--allow-insecure-unlock",
-        "--rpc.allow-unprotected-txs"
+        "--rpc.allow-unprotected-txs",
         "--ws",
         "--ws.origins",
-        "*",
+        "file://*",
         "--ws.addr",
         "127.0.0.1",
         "--ws.port",
