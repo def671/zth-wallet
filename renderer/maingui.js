@@ -105,38 +105,38 @@ class MainGUI {
 }
 
 ipcRenderer.on("showAboutDialog", function (event, message) {
-  EthoMainGUI.showAboutDialog(message);
+  ZthMainGUI.showAboutDialog(message);
 });
 
 $("#mainNavBtnTransactions").click(function () {
-  EthoTransactions.clearFilter();
-  EthoMainGUI.changeAppState("transactions");
-  EthoTransactions.renderTransactions();
+  ZthTransactions.clearFilter();
+  ZthMainGUI.changeAppState("transactions");
+  ZthTransactions.renderTransactions();
 });
 
 $("#mainNavBtnAddressBoook").click(function () {
-  EthoMainGUI.changeAppState("addressBook");
-  EthoAddressBook.renderAddressBook();
+  ZthMainGUI.changeAppState("addressBook");
+  ZthAddressBook.renderAddressBook();
 });
 
 $("#mainNavBtnSend").click(function () {
-  EthoMainGUI.changeAppState("send");
-  EthoSend.renderSendState();
+  ZthMainGUI.changeAppState("send");
+  ZthSend.renderSendState();
 });
 
 $("#mainNavBtnWallets").click(function () {
-  EthoMainGUI.changeAppState("account");
-  EthoWallets.renderWalletsState();
+  ZthMainGUI.changeAppState("account");
+  ZthWallets.renderWalletsState();
 });
 
 $("#mainNavBtnMarkets").click(function () {
-  EthoMainGUI.changeAppState("markets");
-  EthoMarkets.renderMarkets();
+  ZthMainGUI.changeAppState("markets");
+  ZthMarkets.renderMarkets();
 });
 
 $("#mainNavBtnSettings").click(function () {
-  EthoMainGUI.changeAppState("settings");
-  EthoSettings.renderSettingsState();
+  ZthMainGUI.changeAppState("settings");
+  ZthSettings.renderSettingsState();
 });
 
-EthoMainGUI = new MainGUI();
+ZthMainGUI = new MainGUI();

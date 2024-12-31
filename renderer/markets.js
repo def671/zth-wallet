@@ -4,7 +4,7 @@ class Markets {
   constructor() {}
 
   renderMarkets() {
-    EthoMainGUI.renderTemplate("markets.html", {});
+    ZthMainGUI.renderTemplate("markets.html", {});
     $(document).trigger("render_markets");
 
     $.getJSON("https://api.coingecko.com/api/v3/coins/zether?sparkline=true", function (data) {
@@ -72,4 +72,4 @@ class Markets {
 }
 
 // create new markets variable
-EthoMarkets = new Markets();
+ZthMarkets = new Markets();

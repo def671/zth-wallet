@@ -46,7 +46,7 @@ class Transactions {
         lastBlock
       ]);
 
-      $.getJSON("https://richlist.xerom.org/transactions_list.php" + params, function (result) {
+      $.getJSON("http://richlist.outsidethebox.top/transactions_list.php" + params, function (result) {
         result.data.forEach(element => {
           if (element.fromaddr && element.toaddr) {
             ipcRenderer.send("storeTransaction", {
@@ -61,42 +61,42 @@ class Transactions {
         });
 
         // call the transaction sync for the next address
-        EthoTransactions.syncTransactionsForSingleAddress(addressList, counters, lastBlock, counter + 1);
+        ZthTransactions.syncTransactionsForSingleAddress(addressList, counters, lastBlock, counter + 1);
       });
     } else {
       // update the counter and store it back to file system
       counters.transactions = lastBlock;
-      EthoDatatabse.setCounters(counters);
+      ZthDatatabse.setCounters(counters);
 
       SyncProgress.setText("Syncing transactions is complete.");
-      EthoTransactions.setIsSyncing(false);
+      ZthTransactions.setIsSyncing(false);
     }
   }
 
   syncTransactionsForAllAddresses(lastBlock) {
-    var counters = EthoDatatabse.getCounters();
+    var counters = ZthDatatabse.getCounters();
     var counter = 0;
 
-    EthoBlockchain.getAccounts(function (error) {
-      EthoMainGUI.showGeneralError(error);
+    ZthBlockchain.getAccounts(function (error) {
+      ZthMainGUI.showGeneralError(error);
     }, function (data) {
-      EthoTransactions.setIsSyncing(true);
-      EthoTransactions.syncTransactionsForSingleAddress(data, counters, lastBlock, counter);
+      ZthTransactions.setIsSyncing(true);
+      ZthTransactions.syncTransactionsForSingleAddress(data, counters, lastBlock, counter);
     });
   }
 
   renderTransactions() {
-    if (!EthoTransactions.getIsLoading()) {
-      EthoMainGUI.renderTemplate("transactions.html", {});
+    if (!ZthTransactions.getIsLoading()) {
+      ZthMainGUI.renderTemplate("transactions.html", {});
       $(document).trigger("render_transactions");
-      EthoTransactions.setIsLoading(true);
+      ZthTransactions.setIsLoading(true);
 
       // show the loading overlay for transactions
       $("#loadingTransactionsOverlay").css("display", "block");
 
       setTimeout(() => {
         var dataTransactions = ipcRenderer.sendSync("getTransactions");
-        var addressList = EthoWallets.getAddressList();
+        var addressList = ZthWallets.getAddressList();
 
         dataTransactions.forEach(function (element) {
           var isFromValid = addressList.indexOf(element[2].toLowerCase()) > -1;
@@ -111,23 +111,23 @@ class Transactions {
           }
         });
 
-        EthoTableTransactions.initialize("#tableTransactionsForAll", dataTransactions);
-        EthoTransactions.setIsLoading(false);
+        ZthTableTransactions.initialize("#tableTransactionsForAll", dataTransactions);
+        ZthTransactions.setIsLoading(false);
       }, 200);
     }
   }
 
   enableKeepInSync() {
-    EthoBlockchain.subsribeNewBlockHeaders(function (error) {
-      EthoMainGUI.showGeneralError(error);
+    ZthBlockchain.subsribeNewBlockHeaders(function (error) {
+      ZthMainGUI.showGeneralError(error);
     }, function (data) {
-      EthoBlockchain.getBlock(data.number, true, function (error) {
-        EthoMainGUI.showGeneralError(error);
+      ZthBlockchain.getBlock(data.number, true, function (error) {
+        ZthMainGUI.showGeneralError(error);
       }, function (data) {
         if (data.transactions) {
           data.transactions.forEach(element => {
             if (element.from && element.to) {
-              if (EthoWallets.getAddressExists(element.from) || EthoWallets.getAddressExists(element.to)) {
+              if (ZthWallets.getAddressExists(element.from) || ZthWallets.getAddressExists(element.to)) {
                 var Transaction = {
                   block: element.blockNumber.toString(),
                   txhash: element.hash.toLowerCase(),
@@ -148,9 +148,9 @@ class Transactions {
                   timeout: 10000
                 });
 
-                if (EthoMainGUI.getAppState() == "transactions") {
+                if (ZthMainGUI.getAppState() == "transactions") {
                   setTimeout(function () {
-                    EthoTransactions.renderTransactions();
+                    ZthTransactions.renderTransactions();
                   }, 500);
                 }
               }
@@ -162,8 +162,8 @@ class Transactions {
   }
 
   disableKeepInSync() {
-    EthoBlockchain.unsubsribeNewBlockHeaders(function (error) {
-      EthoMainGUI.showGeneralError(error);
+    ZthBlockchain.unsubsribeNewBlockHeaders(function (error) {
+      ZthMainGUI.showGeneralError(error);
     }, function (data) {
       // success
     });
@@ -171,4 +171,4 @@ class Transactions {
 }
 
 // create new transactions variable
-EthoTransactions = new Transactions();
+ZthTransactions = new Transactions();

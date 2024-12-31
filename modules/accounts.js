@@ -23,7 +23,7 @@ class Accounts {
     });
 
     if (savePath) {
-      const accPath = EthoAccounts.getKeyStoreLocation();
+      const accPath = ZthAccounts.getKeyStoreLocation();
 
       fs.readdir(accPath, function (err, files) {
         var zip = new admZip();
@@ -40,7 +40,7 @@ class Accounts {
 
   importAccounts(accountsFile) {
     var extName = path.extname(accountsFile).toUpperCase();
-    const accPath = EthoAccounts.getKeyStoreLocation();
+    const accPath = ZthAccounts.getKeyStoreLocation();
 
     if (extName == ".ZIP") {
       var zip = new admZip(accountsFile);
@@ -57,14 +57,14 @@ class Accounts {
   }
 
   saveAccount(account) {
-    fs.writeFile(path.join(tEthoAccountshis.getKeyStoreLocation(), "0x" + account.address), JSON.stringify(account), "utf8", function () {
+    fs.writeFile(path.join(tZthAccountshis.getKeyStoreLocation(), "0x" + account.address), JSON.stringify(account), "utf8", function () {
       // file was written
     });
   }
 }
 
 ipcMain.on("exportAccounts", (event, arg) => {
-  EthoAccounts.exportAccounts();
+  ZthAccounts.exportAccounts();
 });
 
 ipcMain.on("importAccounts", (event, arg) => {
@@ -85,15 +85,15 @@ ipcMain.on("importAccounts", (event, arg) => {
   });
 
   if (openPath) {
-    event.returnValue = EthoAccounts.importAccounts(openPath[0]);
+    event.returnValue = ZthAccounts.importAccounts(openPath[0]);
   } else {
     event.returnValue = {};
   }
 });
 
 ipcMain.on("saveAccount", (event, arg) => {
-  EthoAccounts.saveAccount(arg);
+  ZthAccounts.saveAccount(arg);
   event.returnValue = true;
 });
 
-EthoAccounts = new Accounts();
+ZthAccounts = new Accounts();

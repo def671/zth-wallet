@@ -96,10 +96,10 @@ class Geth {
           }
         });
         this.gethProcess.stderr.on("data", function (data) {
-          EthoGeth._writeLog(data.toString() + "\n");
+          ZthGeth._writeLog(data.toString() + "\n");
         });
         this.gethProcess.stdout.on("data", function (data) {
-          EthoGeth._writeLog(data.toString() + "\n");
+          ZthGeth._writeLog(data.toString() + "\n");
         });
       }
     } catch (err) {
@@ -121,7 +121,7 @@ class Geth {
 }
 
 ipcMain.on("stopGeth", (event, arg) => {
-  EthoGeth.stopGeth();
+  ZthGeth.stopGeth();
 });
 
-EthoGeth = new Geth();
+ZthGeth = new Geth();

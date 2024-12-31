@@ -29,7 +29,7 @@ locker.lock().then(function() {
 
     // and load the index.html of the app.
     mainWindow.loadFile("index.html");
-    EthoGeth.startGeth();
+    ZthGeth.startGeth();
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
@@ -55,7 +55,7 @@ locker.lock().then(function() {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== "darwin") {
-      EthoGeth.stopGeth();
+      ZthGeth.stopGeth();
       app.quit();
     }
   });

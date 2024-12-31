@@ -27,13 +27,13 @@ class tableTransactions {
       ],
       data: data,
       oSearch: {
-        sSearch: EthoTransactions.getFilter()
+        sSearch: ZthTransactions.getFilter()
       },
       buttons: [
         {
           text: '<i class="fas fa-sync-alt"></i>',
           action: function (e, dt, node, config) {
-            EthoTransactions.renderTransactions();
+            ZthTransactions.renderTransactions();
           }
         }
       ],
@@ -64,7 +64,7 @@ class tableTransactions {
         }, {
           targets: 6,
           render: function (data, type, row) {
-            return parseFloat(web3Local.utils.fromWei(EthoUtils.toFixed(parseFloat(data)).toString(), "ether")).toFixed(2);
+            return parseFloat(web3Local.utils.fromWei(ZthUtils.toFixed(parseFloat(data)).toString(), "ether")).toFixed(2);
           }
         }, {
           targets: 7,
@@ -97,7 +97,7 @@ class tableTransactions {
         $("#txFromAddress").attr("href", vsprintf("https://zthscan.com/address/%s", [rowData[4]]));
         $("#txToAddress").html(rowData[5]);
         $("#txToAddress").attr("href", vsprintf("https://zthscan.com/address/%s", [rowData[5]]));
-        $("#txValue").html(web3Local.utils.fromWei(EthoUtils.toFixed(parseFloat(rowData[6])).toString(), "ether"));
+        $("#txValue").html(web3Local.utils.fromWei(ZthUtils.toFixed(parseFloat(rowData[6])).toString(), "ether"));
 
         $("#dlgTransactionInfo a").off("click").on("click", function (even) {
           event.preventDefault();
@@ -115,4 +115,4 @@ class tableTransactions {
 }
 
 // create new tables variable
-EthoTableTransactions = new tableTransactions();
+ZthTableTransactions = new tableTransactions();

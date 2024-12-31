@@ -55,7 +55,7 @@ function StartSyncProcess() {
           web3Local.eth.getBlock("latest", function (error, localBlock) {
             if (!error) {
               if (localBlock.number > 0) {
-                if (!EthoTransactions.getIsSyncing()) {
+                if (!ZthTransactions.getIsSyncing()) {
                   SyncProgress.animate(1);
                   SyncProgress.setText(vsprintf("%d/%d (100%%)", [localBlock.number, localBlock.number]));
                 }
@@ -67,22 +67,22 @@ function StartSyncProcess() {
                   isFullySynced = true;
 
                   // enable the keep in sync feature
-                  EthoTransactions.enableKeepInSync();
+                  ZthTransactions.enableKeepInSync();
                   // sync all the transactions to the current block
-                  EthoTransactions.syncTransactionsForAllAddresses(localBlock.number);
+                  ZthTransactions.syncTransactionsForAllAddresses(localBlock.number);
 
                   // signal that the sync is complete
                   $(document).trigger("onSyncComplete");
                 }
               }
             } else {
-              EthoMainGUI.showGeneralError(error);
+              ZthMainGUI.showGeneralError(error);
             }
           });
         }, 10000);
       }
     } else {
-      EthoMainGUI.showGeneralError(error);
+      ZthMainGUI.showGeneralError(error);
     }
   }).on("data", function (sync) {
     if (sync && sync.HighestBlock > 0) {
@@ -105,7 +105,7 @@ function StartSyncProcess() {
               Math.floor(sync.currentBlock / sync.highestBlock * 100)
             ]));
           } else if (error) {
-            EthoMainGUI.showGeneralError(error);
+            ZthMainGUI.showGeneralError(error);
           }
         });
       }, 2000);
@@ -129,6 +129,6 @@ var InitWeb3 = setInterval(function () {
       }
     });
   } catch (err) {
-    EthoMainGUI.showGeneralError(err);
+    ZthMainGUI.showGeneralError(err);
   }
 }, 2000);

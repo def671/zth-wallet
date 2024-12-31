@@ -78,14 +78,14 @@ const template = [
     role: "help",
     submenu: [
       {
-        label: "About the XERO wallet",
+        label: "About the ZTH wallet",
         click() {
           var infoData = {};
           infoData.version = app.getVersion();
           mainWindow.webContents.send("showAboutDialog", infoData);
         }
       }, {
-        label: "XERO documentation",
+        label: "ZTH documentation",
         click() {
           shell.openExternal("https://docs.xerom.org");
         }

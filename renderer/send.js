@@ -5,38 +5,38 @@ class SendTransaction {
   constructor() {}
 
   renderSendState() {
-    EthoBlockchain.getAccountsData(function (error) {
-      EthoMainGUI.showGeneralError(error);
+    ZthBlockchain.getAccountsData(function (error) {
+      ZthMainGUI.showGeneralError(error);
     }, function (data) {
-      EthoMainGUI.renderTemplate("send.html", data);
+      ZthMainGUI.renderTemplate("send.html", data);
       $(document).trigger("render_send");
     });
   }
 
   validateSendForm() {
-    if (EthoMainGUI.getAppState() == "send") {
+    if (ZthMainGUI.getAppState() == "send") {
       if (!$("#sendFromAddress").val()) {
-        EthoMainGUI.showGeneralError("Sender address must be specified!");
+        ZthMainGUI.showGeneralError("Sender address must be specified!");
         return false;
       }
 
-      if (!EthoBlockchain.isAddress($("#sendFromAddress").val())) {
-        EthoMainGUI.showGeneralError("Sender address must be a valid address!");
+      if (!ZthBlockchain.isAddress($("#sendFromAddress").val())) {
+        ZthMainGUI.showGeneralError("Sender address must be a valid address!");
         return false;
       }
 
       if (!$("#sendToAddress").val()) {
-        EthoMainGUI.showGeneralError("Recipient address must be specified!");
+        ZthMainGUI.showGeneralError("Recipient address must be specified!");
         return false;
       }
 
-      if (!EthoBlockchain.isAddress($("#sendToAddress").val())) {
-        EthoMainGUI.showGeneralError("Recipient address must be a valid address!");
+      if (!ZthBlockchain.isAddress($("#sendToAddress").val())) {
+        ZthMainGUI.showGeneralError("Recipient address must be a valid address!");
         return false;
       }
 
       if (Number($("#sendAmmount").val()) <= 0) {
-        EthoMainGUI.showGeneralError("Send amount must be greater then zero!");
+        ZthMainGUI.showGeneralError("Send amount must be greater then zero!");
         return false;
       }
 
@@ -47,7 +47,7 @@ class SendTransaction {
   }
 
   resetSendForm() {
-    if (EthoMainGUI.getAppState() == "send") {
+    if (ZthMainGUI.getAppState() == "send") {
       $("#sendToAddressName").html("");
       $("#sendToAddress").val("");
       $("#sendAmmount").val(0);
@@ -78,20 +78,20 @@ $(document).on("render_send", function () {
   $("#sendToAddress").off("input").on("input", function () {
     var addressName = null;
     $("#sendToAddressName").html("");
-    addressName = EthoAddressBook.getAddressName($("#sendToAddress").val());
+    addressName = ZthAddressBook.getAddressName($("#sendToAddress").val());
 
     if (!addressName) {
-      var wallets = EthoDatatabse.getWallets();
+      var wallets = ZthDatatabse.getWallets();
       addressName = wallets.names[$("#sendToAddress").val()];
     }
     $("#sendToAddressName").html(addressName);
   });
 
   $("#btnLookForToAddress").off("click").on("click", function () {
-    EthoBlockchain.getAddressListData(function (error) {
-      EthoMainGUI.showGeneralError(error);
+    ZthBlockchain.getAddressListData(function (error) {
+      ZthMainGUI.showGeneralError(error);
     }, function (addressList) {
-      var addressBook = EthoAddressBook.getAddressList();
+      var addressBook = ZthAddressBook.getAddressList();
 
       for (var key in addressBook) {
         if (addressBook.hasOwnProperty(key)) {
@@ -103,7 +103,7 @@ $(document).on("render_send", function () {
       }
 
       $("#dlgAddressList").iziModal({width: "800px"});
-      EthoMainGUI.renderTemplate("addresslist.html", addressList, $("#dlgAddressListBody"));
+      ZthMainGUI.renderTemplate("addresslist.html", addressList, $("#dlgAddressListBody"));
       $("#dlgAddressList").iziModal("open");
 
       $(".btnSelectToAddress").off("click").on("click", function () {
@@ -113,30 +113,30 @@ $(document).on("render_send", function () {
       });
 
       $("#addressListFilter").off("input").on("input", function (e) {
-        EthoUtils.filterTable($("#addressTable"), $("#addressListFilter").val());
+        ZthUtils.filterTable($("#addressTable"), $("#addressListFilter").val());
       });
 
       $("#btnClearSearchField").off("click").on("click", function () {
-        EthoUtils.filterTable($("#addressTable"), "");
+        ZthUtils.filterTable($("#addressTable"), "");
         $("#addressListFilter").val("");
       });
     });
   });
 
   $("#btnAddToAddressBook").off("click").on("click", function () {
-    if (EthoBlockchain.isAddress($("#sendToAddress").val())) {
+    if (ZthBlockchain.isAddress($("#sendToAddress").val())) {
       $("#dlgAddAddressToBook").iziModal();
       $("#inputAddressName").val("");
       $("#dlgAddAddressToBook").iziModal("open");
 
       function doAddAddressToAddressBook() {
-        EthoAddressBook.setAddressName($("#sendToAddress").val(), $("#inputAddressName").val());
+        ZthAddressBook.setAddressName($("#sendToAddress").val(), $("#inputAddressName").val());
         $("#dlgAddAddressToBook").iziModal("close");
 
         iziToast.success({title: "Success", message: "Address was added to address book", position: "topRight", timeout: 2000});
       }
     } else {
-      EthoMainGUI.showGeneralError("Recipient address is not valid!");
+      ZthMainGUI.showGeneralError("Recipient address is not valid!");
     }
 
     $("#btnAddAddressToBookConfirm").off("click").on("click", function () {
@@ -151,9 +151,9 @@ $(document).on("render_send", function () {
   });
 
   $("#btnSendTransaction").off("click").on("click", function () {
-    if (EthoSend.validateSendForm()) {
-      EthoBlockchain.getTranasctionFee($("#sendFromAddress").val(), $("#sendToAddress").val(), $("#sendAmmount").val(), function (error) {
-        EthoMainGUI.showGeneralError(error);
+    if (ZthSend.validateSendForm()) {
+      ZthBlockchain.getTranasctionFee($("#sendFromAddress").val(), $("#sendToAddress").val(), $("#sendAmmount").val(), function (error) {
+        ZthMainGUI.showGeneralError(error);
       }, function (data) {
         $("#dlgSendWalletPassword").iziModal();
         $("#walletPassword").val("");
@@ -166,18 +166,18 @@ $(document).on("render_send", function () {
         function doSendTransaction() {
           $("#dlgSendWalletPassword").iziModal("close");
 
-          EthoBlockchain.prepareTransaction($("#walletPassword").val(), $("#sendFromAddress").val(), $("#sendToAddress").val(), $("#sendAmmount").val(), function (error) {
-            EthoMainGUI.showGeneralError(error);
+          ZthBlockchain.prepareTransaction($("#walletPassword").val(), $("#sendFromAddress").val(), $("#sendToAddress").val(), $("#sendAmmount").val(), function (error) {
+            ZthMainGUI.showGeneralError(error);
           }, function (data) {
-            EthoBlockchain.sendTransaction(data.raw, function (error) {
-              EthoMainGUI.showGeneralError(error);
+            ZthBlockchain.sendTransaction(data.raw, function (error) {
+              ZthMainGUI.showGeneralError(error);
             }, function (data) {
-              EthoSend.resetSendForm();
+              ZthSend.resetSendForm();
 
               iziToast.success({title: "Sent", message: "Transaction was successfully sent to the chain", position: "topRight", timeout: 5000});
 
-              EthoBlockchain.getTransaction(data, function (error) {
-                EthoMainGUI.showGeneralError(error);
+              ZthBlockchain.getTransaction(data, function (error) {
+                ZthMainGUI.showGeneralError(error);
               }, function (transaction) {
                 ipcRenderer.send("storeTransaction", {
                   block: transaction.blockNumber,
@@ -207,4 +207,4 @@ $(document).on("render_send", function () {
 });
 
 // create new account variable
-EthoSend = new SendTransaction();
+ZthSend = new SendTransaction();

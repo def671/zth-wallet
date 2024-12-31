@@ -4,7 +4,7 @@ class Wallets {
   constructor() {
     this.addressList = [];
     $.getJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=zether", function (price) {
-      EthoWallets._setPrice(price.USD);
+      ZthWallets._setPrice(price.USD);
     });
   }
 
@@ -39,27 +39,27 @@ class Wallets {
   }
 
   enableButtonTooltips() {
-    EthoUtils.createToolTip("#btnNewAddress", "Create New Address");
-    EthoUtils.createToolTip("#btnRefreshAddress", "Refresh Address List");
-    EthoUtils.createToolTip("#btnExportAccounts", "Export Accounts");
-    EthoUtils.createToolTip("#btnImportAccounts", "Import Accounts");
-    EthoUtils.createToolTip("#btnImportFromPrivateKey", "Import From Private Key");
+    ZthUtils.createToolTip("#btnNewAddress", "Create New Address");
+    ZthUtils.createToolTip("#btnRefreshAddress", "Refresh Address List");
+    ZthUtils.createToolTip("#btnExportAccounts", "Export Accounts");
+    ZthUtils.createToolTip("#btnImportAccounts", "Import Accounts");
+    ZthUtils.createToolTip("#btnImportFromPrivateKey", "Import From Private Key");
   }
 
   validateNewAccountForm() {
-    if (EthoMainGUI.getAppState() == "account") {
+    if (ZthMainGUI.getAppState() == "account") {
       if (!$("#walletPasswordFirst").val()) {
-        EthoMainGUI.showGeneralError("Password cannot be empty!");
+        ZthMainGUI.showGeneralError("Password cannot be empty!");
         return false;
       }
 
       if (!$("#walletPasswordSecond").val()) {
-        EthoMainGUI.showGeneralError("Password cannot be empty!");
+        ZthMainGUI.showGeneralError("Password cannot be empty!");
         return false;
       }
 
       if ($("#walletPasswordFirst").val() !== $("#walletPasswordSecond").val()) {
-        EthoMainGUI.showGeneralError("Passwords do not match!");
+        ZthMainGUI.showGeneralError("Passwords do not match!");
         return false;
       }
 
@@ -70,24 +70,24 @@ class Wallets {
   }
 
   validateImportFromKeyForm() {
-    if (EthoMainGUI.getAppState() == "account") {
+    if (ZthMainGUI.getAppState() == "account") {
       if (!$("#inputPrivateKey").val()) {
-        EthoMainGUI.showGeneralError("Private key cannot be empty!");
+        ZthMainGUI.showGeneralError("Private key cannot be empty!");
         return false;
       }
 
       if (!$("#keyPasswordFirst").val()) {
-        EthoMainGUI.showGeneralError("Password cannot be empty!");
+        ZthMainGUI.showGeneralError("Password cannot be empty!");
         return false;
       }
 
       if (!$("#keyPasswordSecond").val()) {
-        EthoMainGUI.showGeneralError("Password cannot be empty!");
+        ZthMainGUI.showGeneralError("Password cannot be empty!");
         return false;
       }
 
       if ($("#keyPasswordFirst").val() !== $("#keyPasswordSecond").val()) {
-        EthoMainGUI.showGeneralError("Passwords do not match!");
+        ZthMainGUI.showGeneralError("Passwords do not match!");
         return false;
       }
 
@@ -99,23 +99,23 @@ class Wallets {
 
   renderWalletsState() {
     // clear the list of addresses
-    EthoWallets.clearAddressList();
+    ZthWallets.clearAddressList();
 
-    EthoBlockchain.getAccountsData(function (error) {
-      EthoMainGUI.showGeneralError(error);
+    ZthBlockchain.getAccountsData(function (error) {
+      ZthMainGUI.showGeneralError(error);
     }, function (data) {
       data.addressData.forEach(element => {
-        EthoWallets.addAddressToList(element.address);
+        ZthWallets.addAddressToList(element.address);
       });
 
       // render the wallets current state
-      EthoMainGUI.renderTemplate("wallets.html", data);
+      ZthMainGUI.renderTemplate("wallets.html", data);
       $(document).trigger("render_wallets");
-      EthoWallets.enableButtonTooltips();
+      ZthWallets.enableButtonTooltips();
 
       $("#labelSumDollars").html(vsprintf("/ %.2f $ / %.4f $ per ZTH", [
-        data.sumBalance * EthoWallets._getPrice(),
-        EthoWallets._getPrice()
+        data.sumBalance * ZthWallets._getPrice(),
+        ZthWallets._getPrice()
       ]));
     });
   }
@@ -137,12 +137,12 @@ $(document).on("render_wallets", function () {
     function doCreateNewWallet() {
       $("#dlgCreateWalletPassword").iziModal("close");
 
-      if (EthoWallets.validateNewAccountForm()) {
-        EthoBlockchain.createNewAccount($("#walletPasswordFirst").val(), function (error) {
-          EthoMainGUI.showGeneralError(error);
+      if (ZthWallets.validateNewAccountForm()) {
+        ZthBlockchain.createNewAccount($("#walletPasswordFirst").val(), function (error) {
+          ZthMainGUI.showGeneralError(error);
         }, function (account) {
-          EthoWallets.addAddressToList(account);
-          EthoWallets.renderWalletsState();
+          ZthWallets.addAddressToList(account);
+          ZthWallets.renderWalletsState();
 
           iziToast.success({title: "Created", message: "New wallet was successfully created", position: "topRight", timeout: 5000});
         });
@@ -161,9 +161,9 @@ $(document).on("render_wallets", function () {
   });
 
   $(".btnShowAddressTransactions").off("click").on("click", function () {
-    EthoTransactions.setFilter($(this).attr("data-wallet"));
-    EthoMainGUI.changeAppState("transactions");
-    EthoTransactions.renderTransactions();
+    ZthTransactions.setFilter($(this).attr("data-wallet"));
+    ZthMainGUI.changeAppState("transactions");
+    ZthTransactions.renderTransactions();
   });
 
   $(".btnShowQRCode").off("click").on("click", function () {
@@ -187,14 +187,14 @@ $(document).on("render_wallets", function () {
     $("#dlgChangeWalletName").iziModal("open");
 
     function doChangeWalletName() {
-      var wallets = EthoDatatabse.getWallets();
+      var wallets = ZthDatatabse.getWallets();
 
       // set the wallet name from the dialog box
       wallets.names[walletAddress] = $("#inputWalletName").val();
-      EthoDatatabse.setWallets(wallets);
+      ZthDatatabse.setWallets(wallets);
 
       $("#dlgChangeWalletName").iziModal("close");
-      EthoWallets.renderWalletsState();
+      ZthWallets.renderWalletsState();
     }
 
     $("#btnChangeWalletNameConfirm").off("click").on("click", function () {
@@ -209,7 +209,7 @@ $(document).on("render_wallets", function () {
   });
 
   $("#btnRefreshAddress").off("click").on("click", function () {
-    EthoWallets.renderWalletsState();
+    ZthWallets.renderWalletsState();
   });
 
   $("#btnExportAccounts").off("click").on("click", function () {
@@ -222,7 +222,7 @@ $(document).on("render_wallets", function () {
     if (ImportResult.success) {
       iziToast.success({title: "Imported", message: ImportResult.text, position: "topRight", timeout: 2000});
     } else if (ImportResult.success == false) {
-      EthoMainGUI.showGeneralError(ImportResult.text);
+      ZthMainGUI.showGeneralError(ImportResult.text);
     }
   });
 
@@ -234,15 +234,15 @@ $(document).on("render_wallets", function () {
     function doImportFromPrivateKeys() {
       $("#dlgImportFromPrivateKey").iziModal("close");
 
-      if (EthoWallets.validateImportFromKeyForm()) {
-        var account = EthoBlockchain.importFromPrivateKey($("#inputPrivateKey").val(), $("#keyPasswordFirst").val(), function (error) {
-          EthoMainGUI.showGeneralError(error);
+      if (ZthWallets.validateImportFromKeyForm()) {
+        var account = ZthBlockchain.importFromPrivateKey($("#inputPrivateKey").val(), $("#keyPasswordFirst").val(), function (error) {
+          ZthMainGUI.showGeneralError(error);
         }, function (account) {
           if (account) {
-            EthoWallets.renderWalletsState();
+            ZthWallets.renderWalletsState();
             iziToast.success({title: "Imported", message: "Account was succesfully imported", position: "topRight", timeout: 2000});
           } else {
-            EthoMainGUI.showGeneralError("Error importing account from private key!");
+            ZthMainGUI.showGeneralError("Error importing account from private key!");
           }
         });
       }
@@ -260,7 +260,7 @@ $(document).on("render_wallets", function () {
   });
 
   $(".textAddress").off("click").on("click", function () {
-    EthoMainGUI.copyToClipboard($(this).html());
+    ZthMainGUI.copyToClipboard($(this).html());
 
     iziToast.success({title: "Copied", message: "Address was copied to clipboard", position: "topRight", timeout: 2000});
   });
@@ -268,14 +268,14 @@ $(document).on("render_wallets", function () {
 
 // event that tells us that geth is ready and up
 $(document).on("onGethReady", function () {
-  EthoMainGUI.changeAppState("account");
-  EthoWallets.renderWalletsState();
+  ZthMainGUI.changeAppState("account");
+  ZthWallets.renderWalletsState();
 });
 
 $(document).on("onNewAccountTransaction", function () {
-  if (EthoMainGUI.getAppState() == "account") {
-    EthoWallets.renderWalletsState();
+  if (ZthMainGUI.getAppState() == "account") {
+    ZthWallets.renderWalletsState();
   }
 });
 
-EthoWallets = new Wallets();
+ZthWallets = new Wallets();
