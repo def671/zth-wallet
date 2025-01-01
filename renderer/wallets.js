@@ -3,8 +3,12 @@ const {ipcRenderer} = require("electron");
 class Wallets {
   constructor() {
     this.addressList = [];
-    $.getJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=zether", function (price) {
-      ZthWallets._setPrice(price.USD);
+$.getJSON("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=zether", function (price) {
+    if (price && price.length > 0) {
+        ZthWallets._setPrice(price[0].current_price);
+    } else {
+        console.error("No data received from API");
+    }
     });
   }
 
@@ -113,7 +117,7 @@ class Wallets {
       $(document).trigger("render_wallets");
       ZthWallets.enableButtonTooltips();
 
-      $("#labelSumDollars").html(vsprintf("/ %.2f $ / %.4f $ per ZTH", [
+      $("#labelSumDollars").html(vsprintf("/ %.2f USD / %.8f USD per ZTH", [
         data.sumBalance * ZthWallets._getPrice(),
         ZthWallets._getPrice()
       ]));

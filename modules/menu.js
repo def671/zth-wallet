@@ -87,12 +87,12 @@ const template = [
       }, {
         label: "ZTH documentation",
         click() {
-          shell.openExternal("https://docs.xerom.org");
+          shell.openExternal("https://zether.org");
         }
       }, {
         label: "Report issue on GitHub",
         click() {
-          shell.openExternal("https://github.com/xero-official/Xero-Wallet/issues");
+          shell.openExternal("https://github.com/def671/zth-wallet/issues");
         }
       }
     ]
