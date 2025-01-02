@@ -51,7 +51,7 @@ class Markets {
                   beginAtZero: true,
                   fontSize: 10,
                   callback: function (value, index, values) {
-                    return value.toFixed(2) + " $";
+                    return value.toFixed(6) + " $";
                   }
                 },
                 gridLines: {
