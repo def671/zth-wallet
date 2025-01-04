@@ -29,7 +29,7 @@ class Markets {
               fill: true,
               borderWidth: 3,
               pointRadius: 0,
-              borderColor: "#308968"
+              borderColor: "#5271ff"
             }
           ]
         },

@@ -184,12 +184,12 @@ body.pg-loaded>.inner {
 
 .modalDialog {
   display: none;
-  border-bottom: 3px solid #308968 !important;
+  border-bottom: 3px solid #5271ff !important;
   border-radius: 0px !important;
 }
 
 .iziModal-header {
-  background: #308968 !important;
+  background: #5271ff !important;
 }
 
 #walletsToolbar {
@@ -219,7 +219,7 @@ div.loadingText {
 }
 
 div.sidebar svg {
-  color: #308968;
+  color: #5271ff;
 }
 
 #tableTransactionsForAll_filter {
@@ -296,7 +296,7 @@ div.sidebar svg {
 }
 
 .txInfo label+label {
-  color: #308968;
+  color: #5271ff;
   margin-left: 0px;
 }
 
@@ -309,13 +309,13 @@ div.sidebar svg {
 #toAddressInfo,
 #valueToSendInfo,
 #feeToPayInfo {
-  color: #308968;
+  color: #5271ff;
   margin-left: 5px;
   margin-right: 5px;
 }
 
 .accountName {
-  color: #308968;
+  color: #5271ff;
 }
 
 .accountAddr {
@@ -426,7 +426,7 @@ div.noAddressWrapper {
 }
 
 .etho-red {
-  background-color: #308968 !important;
+  background-color: #5271ff !important;
 }
 
 #chartMarketPrice {

@@ -1,50 +1,50 @@
-.btn-etho {
+.btn-zth {
   color: #ffffff;
-  background-color: #308968;
+  background-color: #5271ff;
   border-color: #103024;
 }
 
-.btn-etho:hover {
+.btn-zth:hover {
   background: #fff;
   box-shadow: 0px 2px 10px 5px #1abc9c;
   color: #000;
   },
-.btn-etho:focus,
-.btn-etho:active,
-.btn-etho.active,
-.open .dropdown-toggle.btn-etho {
+.btn-zth:focus,
+.btn-zth:active,
+.btn-zth.active,
+.open .dropdown-toggle.btn-zth {
   color: #ffffff;
   background-color: #3cc492;
   border-color: #103024;
 }
 
-.btn-etho:active,
-.btn-etho.active,
-.open .dropdown-toggle.btn-etho {
+.btn-zth:active,
+.btn-zth.active,
+.open .dropdown-toggle.btn-zth {
   background-image: none;
 }
 
-.btn-etho.disabled,
-.btn-etho[disabled],
-fieldset[disabled] .btn-etho,
-.btn-etho.disabled:hover,
-.btn-etho[disabled]:hover,
-fieldset[disabled] .btn-etho:hover,
-.btn-etho.disabled:focus,
-.btn-etho[disabled]:focus,
-fieldset[disabled] .btn-etho:focus,
-.btn-etho.disabled:active,
-.btn-etho[disabled]:active,
-fieldset[disabled] .btn-etho:active,
-.btn-etho.disabled.active,
-.btn-etho[disabled].active,
-fieldset[disabled] .btn-etho.active {
-  background-color: #308968;
+.btn-zth.disabled,
+.btn-zth[disabled],
+fieldset[disabled] .btn-zth,
+.btn-zth.disabled:hover,
+.btn-zth[disabled]:hover,
+fieldset[disabled] .btn-zth:hover,
+.btn-zth.disabled:focus,
+.btn-zth[disabled]:focus,
+fieldset[disabled] .btn-zth:focus,
+.btn-zth.disabled:active,
+.btn-zth[disabled]:active,
+fieldset[disabled] .btn-zth:active,
+.btn-zth.disabled.active,
+.btn-zth[disabled].active,
+fieldset[disabled] .btn-zth.active {
+  background-color: #5271ff;
   border-color: #450118;
 }
 
-.btn-etho .badge {
-  color: #308968;
+.btn-zth .badge {
+  color: #5271ff;
   background-color: #ffffff;
 }
 
@@ -55,7 +55,7 @@ fieldset[disabled] .btn-etho.active {
   font-size: 12px;
   letter-spacing: 2px;
   position: relative;
-  background-color: #308968;
+  background-color: #5271ff;
   border: none;
   color: #fff;
   padding: 2px;
@@ -102,7 +102,7 @@ fieldset[disabled] .btn-etho.active {
   font-size: 10px;
   letter-spacing: 1px;
   position: relative;
-  background-color: #308968;
+  background-color: #5271ff;
   border: none;
   color: #fff;
   padding: 2px;
@@ -149,7 +149,7 @@ fieldset[disabled] .btn-etho.active {
   font-size: 12px;
   letter-spacing: 2px;
   position: relative;
-  background-color: #308968;
+  background-color: #5271ff;
   border: none;
   color: #fff;
   padding: 8px;
