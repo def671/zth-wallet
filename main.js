@@ -1,3 +1,7 @@
+// call initGeth.js module
+const initGeth = require('./modules/initGeth');
+initGeth();
+
 // Modules to control application life and create native browser window
 const {
   app,
