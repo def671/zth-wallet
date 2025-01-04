@@ -1,7 +1,3 @@
-// call initGeth.js module
-const initGeth = require('./modules/initGeth');
-initGeth();
-
 // Modules to control application life and create native browser window
 const {
   app,
@@ -13,12 +9,30 @@ const singleInstance = require("single-instance");
 const path = require("path");
 const fs = require("fs");
 
+// Import initGeth and Geth class
+const { initGeth } = require('./modules/initGeth');
+require('./modules/geth');
+
+(async () => {
+  try {
+    await initGeth();
+    console.log('[Main] Geth initialization completed successfully.');
+
+    // Start Geth normally after initialization
+    ZthGeth.startGeth();
+    console.log('[Main] Geth started and syncing initiated');
+  } catch (error) {
+    console.error('[Main] Geth initialization failed:', error);
+    process.exit(1); // Exit the app on failure
+  }
+})();
+
 var locker = new singleInstance("ZetherWallet");
 
 locker.lock().then(function() {
   // Keep a global reference of the window object, if you don't, the window will
   // be closed automatically when the JavaScript object is garbage collected.
-  mainWindow = null;
+  let mainWindow = null;
 
   function createWindow() {
     // Create the browser window.
@@ -31,18 +45,14 @@ locker.lock().then(function() {
       icon: "assets/images/icon.png"
     });
 
-    // and load the index.html of the app.
+    // Load the index.html of the app.
     mainWindow.loadFile("index.html");
-    ZthGeth.startGeth();
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on("closed", function() {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
       mainWindow = null;
     });
 
@@ -51,13 +61,10 @@ locker.lock().then(function() {
 
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
-  // Some APIs can only be used after this event occurs.
   app.on("ready", createWindow);
 
   // Quit when all windows are closed.
   app.on("window-all-closed", function() {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== "darwin") {
       ZthGeth.stopGeth();
       app.quit();
@@ -65,30 +72,24 @@ locker.lock().then(function() {
   });
 
   app.on("activate", function() {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
       createWindow();
     }
   });
 
-  // In this file you can include the rest of your app's specific main process
-  // code. You can also put them in separate files and require them here.
-  // listen for request to get template
-
-  // get the template content from file
+  // Listen for request to get template
   ipcMain.on("getTemplateContent", (event, arg) => {
     event.returnValue = fs.readFileSync(path.join(app.getAppPath(), "assets/templates/") + arg, "utf8");
   });
 
-  // quit the app on coomand
+  // Quit the app on command
   ipcMain.on("appQuit", (event, arg) => {
     app.quit();
   });
 }).catch(function(err) {
+  console.error('[Main] Error locking single instance:', err);
   app.quit();
 });
 
-require("./modules/geth.js");
 require("./modules/accounts.js");
 require("./modules/database.js");

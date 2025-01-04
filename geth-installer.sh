@@ -29,13 +29,6 @@ rm -rf ../../bin/linux/geth
 sudo mv build/bin/geth ../../bin/linux/
 chmod +x ../../bin/linux/geth
 cd ../../shed
-git clone https://github.com/ZetherOrg/genesis.git
-cd genesis
-mkdir ~/.wally
-mv zether.json ~/.wally
-cd ../../bin/linux
-pwd
-./geth --datadir ~/.wally --networkid 715131 init ~/.wally/zether.json
 echo "Geth is now intialized"
 echo "Retrieving the windows executable"
 cd ../win

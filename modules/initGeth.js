@@ -1,27 +1,30 @@
-const { execSync } = require('child_process');
+// modules/initGethModule.js
 const path = require('path');
-const os = require('os');
+const { exec } = require('child_process');
 
-// Define the datadir relative to the project root
-const datadir = path.resolve(__dirname, '.wally');
+// Define the data directory and Geth executable path
+const datadir = path.resolve(__dirname, '../.wally');
+const genesisPath = path.resolve(__dirname, '../genesis.json');
+const gethExecutable = process.platform === 'win32'
+  ? path.resolve(__dirname, '../bin/win/geth.exe')
+  : path.resolve(__dirname, '../bin/linux/geth');
 
-// Determine the platform and set the Geth binary path
-const isWindows = os.platform() === 'win32';
-const gethBinary = isWindows 
-  ? path.resolve(__dirname, 'bin', 'win', 'geth.exe') 
-  : path.resolve(__dirname, 'bin', 'linux', 'geth');
-
-// Path to the genesis.json file
-const genesisPath = path.resolve(__dirname, 'genesis.json');
-
-// Command to initialize Geth
-const initCommand = `"${gethBinary}" --datadir "${datadir}" init "${genesisPath}"`;
-
-try {
-  console.log('[Init] Initializing Geth...');
-  execSync(initCommand, { stdio: 'inherit' }); // Run the command and inherit stdio for real-time output
-  console.log('[Init] Geth successfully initialized.');
-} catch (error) {
-  console.error('[Init] Error initializing Geth:', error.message);
-  process.exit(1); // Exit with error code 1 if initialization fails
+function initGeth() {
+  return new Promise((resolve, reject) => {
+    console.log('[Init] Initializing Geth...');
+    const command = `"${gethExecutable}" --datadir "${datadir}" init "${genesisPath}"`;
+    
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error('[Init] Error initializing Geth:', error.message);
+        return reject(error);
+      }
+      console.log('[Init] Geth initialization stdout:', stdout);
+      console.log('[Init] Geth initialization stderr:', stderr);
+      resolve();
+    });
+  });
 }
+
+// Export initGeth for use in other modules
+module.exports = { initGeth };
