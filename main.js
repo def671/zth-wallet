@@ -56,7 +56,7 @@ locker.lock().then(function() {
       mainWindow = null;
     });
 
-    require("./modules/menu.js");
+    require("./modules/menu.js")(mainWindow);
   }
 
   // This method will be called when Electron has finished

@@ -76,8 +76,6 @@ startGeth() {
       "715131",
       "--syncmode",
       "snap",
-      "--ethstats",
-      "tester:zether@zth-stats.outsidethebox.top",
       "--bootnodes",
       "enode://a96143d21ac86019f3dc375d618f2ffa7d45541bc783ccb718427750982068af372c64c947730b6ae088f24fc1100364a34e5cb19218e7abf2ffc686bf461cef@209.74.72.123:30157,enode://ebcd7217534f82a97e455a9fb8f31c9da112c33375995a767881164801c6ad2dd7bd0488da2c5881aa5a766d727d9327fe8b52ba1567047c7295b3242564770a@209.74.72.124:30157"
     ]);

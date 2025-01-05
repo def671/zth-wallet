@@ -73,31 +73,13 @@ module.exports = function(mainWindow) {
         {
           label: "ZTH documentation",
           click() {
-            try {
-              shell.openExternal("https://zether.org");
-            } catch (err) {
-              console.error("Failed to open ZTH Documentation page:", err);
-            }
+            shell.openExternal("https://zether.org");
           }
         },
         {
           label: "Report issue on GitHub",
           click() {
-            try {
-              shell.openExternal("https://github.com/zether-cloud/zth-wallet/issues");
-            } catch (err) {
-              console.error("Failed to open GitHub Issues page:", err);
-            }
-          }
-        },
-        {
-          label: "Official Website",
-          click() {
-            try {
-              shell.openExternal("https://zether.org");
-            } catch (err) {
-              console.error("Failed to open the Zether official website:", err);
-            }
+            shell.openExternal("https://github.com/def671/zth-wallet/issues");
           }
         }
       ]
