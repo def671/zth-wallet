@@ -4,8 +4,8 @@ const appRoot = require("app-root-path");
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
-// const datadir = process.env.GETH_DATADIR || path.resolve(process.env.HOME || '~', '.wally');
-const datadir = path.resolve(__dirname, '../.wally');
+// const datadir = process.env.GETH_DATADIR || path.resolve(process.env.HOME || '~', '.zthdata');
+const datadir = path.resolve(__dirname, '../.zthdata');
 
 
 class Geth {

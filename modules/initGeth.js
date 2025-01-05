@@ -3,7 +3,7 @@ const path = require('path');
 const { exec } = require('child_process');
 
 // Define the data directory and Geth executable path
-const datadir = path.resolve(__dirname, '../.wally');
+const datadir = path.resolve(__dirname, '../.zthdata');
 const genesisPath = path.resolve(__dirname, '../genesis.json');
 const gethExecutable = process.platform === 'win32'
   ? path.resolve(__dirname, '../bin/win/geth.exe')
