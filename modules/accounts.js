@@ -1,4 +1,4 @@
-const {app, dialog, ipcMain} = require("electron");
+const { app, dialog, ipcMain, BrowserWindow } = require("electron");
 const admZip = require("adm-zip");
 const path = require("path");
 const fs = require("fs-extra");
@@ -8,92 +8,88 @@ class Accounts {
   constructor() {}
 
   getKeyStoreLocation() {
-    switch (os.type()) {
-      case "Darwin":
-        return path.join(os.homedir(), "Library", "Xerom", "keystore");
-        break;
-      default:
-        return path.join(process.env.APPDATA, "Xerom", "keystore");
-    }
+    return path.join(app.getAppPath(), ".wally", "keystore"); // Correct path inside .wally directory
   }
 
-  exportAccounts() {
-    var savePath = dialog.showSaveDialog({
-      defaultPath: path.join(app.getPath("documents"), "accounts.zip")
-    });
+  async exportAccounts(mainWindow) {
+    try {
+      console.log("[Main] Starting exportAccounts...");
 
-    if (savePath) {
-      const accPath = ZthAccounts.getKeyStoreLocation();
-
-      fs.readdir(accPath, function (err, files) {
-        var zip = new admZip();
-
-        for (let filePath of files) {
-          zip.addFile(filePath, fs.readFileSync(path.join(accPath, filePath)));
-        }
-
-        // store zip to path
-        zip.writeZip(savePath);
+      // Get the save path directly (older Electron versions return a string)
+      const savePath = await dialog.showSaveDialog(mainWindow, {
+        defaultPath: path.join(app.getPath("documents"), "accounts.zip"),
+        title: "Export Accounts",
+        buttonLabel: "Save",
+        filters: [{ name: "ZIP Files", extensions: ["zip"] }],
+        properties: ["createDirectory"]
       });
-    }
-  }
 
-  importAccounts(accountsFile) {
-    var extName = path.extname(accountsFile).toUpperCase();
-    const accPath = ZthAccounts.getKeyStoreLocation();
-
-    if (extName == ".ZIP") {
-      var zip = new admZip(accountsFile);
-      zip.extractAllTo(accPath, true);
-      return {success: true, text: "Accounts ware successfully imported."};
-    } else {
-      try {
-        fs.copySync(accountsFile, path.join(accPath, path.basename(accountsFile)));
-        return {success: true, text: "Account was successfully imported."};
-      } catch (err) {
-        return {success: false, text: err};
+      if (!savePath) {
+        console.log("[Main] Save dialog was canceled. No file selected.");
+        return; // Exit early if no file was selected
       }
-    }
-  }
 
-  saveAccount(account) {
-    fs.writeFile(path.join(tZthAccountshis.getKeyStoreLocation(), "0x" + account.address), JSON.stringify(account), "utf8", function () {
-      // file was written
-    });
+      console.log("[Main] Save path selected:", savePath);
+
+      const accPath = this.getKeyStoreLocation();
+
+      if (!fs.existsSync(accPath)) {
+        console.error("[Main] Keystore directory does not exist:", accPath);
+        dialog.showErrorBox(
+          "Export Error",
+          "Keystore directory does not exist. Please create it or run the wallet initialization first."
+        );
+        return;
+      }
+
+      const files = fs.readdirSync(accPath);
+      console.log("[Main] Keystore directory contents:", files);
+
+      if (files.length === 0) {
+        console.error("[Main] Keystore directory is empty:", accPath);
+        dialog.showErrorBox(
+          "Export Error",
+          "Keystore directory is empty. Please ensure there are accounts to export."
+        );
+        return;
+      }
+
+      const zip = new admZip();
+
+      for (let filePath of files) {
+        const fullPath = path.join(accPath, filePath);
+        console.log("[Main] Adding file to zip:", fullPath);
+        zip.addFile(filePath, fs.readFileSync(fullPath));
+      }
+
+      console.log("[Main] Writing zip file to:", savePath);
+      zip.writeZip(savePath, (writeErr) => {
+        if (writeErr) {
+          console.error("[Main] Failed to write zip file:", writeErr);
+          dialog.showErrorBox("Export Error", "Failed to save the zip file. Please try again.");
+        } else {
+          console.log("[Main] Accounts exported successfully to", savePath);
+	mainWindow.webContents.send("showNotification", {
+	  type: "success",
+	  message: `Accounts exported successfully to: ${savePath}`
+          });
+        }
+      });
+    } catch (err) {
+      console.error("[Main] An unexpected error occurred during export:", err);
+      dialog.showErrorBox("Export Error", "An unexpected error occurred. Please try again.");
+    }
   }
 }
 
-ipcMain.on("exportAccounts", (event, arg) => {
-  ZthAccounts.exportAccounts();
-});
-
-ipcMain.on("importAccounts", (event, arg) => {
-  var openPath = dialog.showOpenDialog({
-    defaultPath: app.getPath("documents"),
-    filters: [
-      {
-        name: "archive",
-        extensions: ["zip"]
-      }, {
-        name: "json",
-        extensions: ["json"]
-      }, {
-        name: "All",
-        extensions: ["*"]
-      }
-    ]
-  });
-
-  if (openPath) {
-    event.returnValue = ZthAccounts.importAccounts(openPath[0]);
-  } else {
-    event.returnValue = {};
-  }
-});
-
-ipcMain.on("saveAccount", (event, arg) => {
-  ZthAccounts.saveAccount(arg);
-  event.returnValue = true;
+ipcMain.on("exportAccounts", async (event, arg) => {
+  console.log("[Main] Received exportAccounts IPC event");
+  const mainWindow = BrowserWindow.getFocusedWindow(); // Get the currently focused window
+  ZthAccounts.exportAccounts(mainWindow)
+    .catch((err) => {
+      console.error("[Main] Failed to export accounts:", err);
+      dialog.showErrorBox("Export Error", "An error occurred while exporting accounts. Please try again.");
+    });
 });
 
 ZthAccounts = new Accounts();

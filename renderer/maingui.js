@@ -1,5 +1,5 @@
 // In renderer process (web page).
-const {ipcRenderer} = require("electron");
+const { ipcRenderer } = require("electron");
 
 class MainGUI {
   constructor() {
@@ -103,6 +103,20 @@ class MainGUI {
     $temp.remove();
   }
 }
+
+// Listener for showing non-blocking notifications
+ipcRenderer.on("showNotification", (event, data) => {
+  const notification = document.createElement("div");
+  notification.className = `notification ${data.type}`;
+  notification.innerText = data.message;
+
+  document.body.appendChild(notification);
+
+  // Automatically dismiss the notification after 5 seconds
+  setTimeout(() => {
+    notification.remove();
+  }, 5000);
+});
 
 ipcRenderer.on("showAboutDialog", function (event, message) {
   ZthMainGUI.showAboutDialog(message);
