@@ -148,10 +148,10 @@ ipcMain.on("deleteBlockchainData", (event, arg) => {
   function getBlockchainDataLocation() {
     switch (os.type()) {
       case "Darwin":
-        return path.join(os.homedir(), "Library", "Xerom", "geth");
+        return path.join(os.homedir(), "Library", "Zether", "geth");
         break;
       default:
-        return path.join(process.env.APPDATA, "Xerom", "geth");
+        return path.join(process.env.APPDATA, "Zether", "geth");
     }
   }
 
